@@ -2,8 +2,28 @@
 {% block content %}
 
 <div class="container">
-    <li>{{ obj.description }}</li>
-    <li>{{ obj.prod_date }}</li>
+    {% for el in obj %}
+    <p>{{ el.description }}</p>
+    <p>{{ el.prod_date }}</p>
+    {% endfor %}
+    Production produced:
+        {% for el in produced %}
+            <li>{{ el.produced.name }}
+            {{ el.quantity }}
+            {{ el.produced_uom.name }}
+            {{ full_price }}</li>
+        {% endfor %}
+    Production consumed:
+        {% for el in consumed %}<li>
+            {{ el.consumed.name }}
+            {{ el.quantity }}
+            {{ el.consumed_uom.name }}
+            {% for key, val in price_dict.items %}
+                {% if key == el.consumed.name %}
+                    {{ val }}
+                {% endif %}
+            {% endfor %}
+        </li>{% endfor %}
 </div>
 
 {% endblock %}
