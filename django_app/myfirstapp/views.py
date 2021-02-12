@@ -1,7 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import ProductionConsumed
+from .models import ProductionConsumed, Production
 
-def test(request):
-    obj = ProductionConsumed.objects.get(consumed=1)
-    return HttpResponse(obj.av_price)
+def home(request):
+    return render(request, 'index.html')
+
+def task1(request):
+    obj = Production.objects.all()
+    return render(request, 'task1.html', {'obj': obj})
+
+def prodreport(request, _id):
+    obj = Production.objects.get(id=_id)
+    return render(request, 'prodreport.html', {'obj': obj})

@@ -127,14 +127,14 @@ class ProductionConsumed(models.Model):
     '''
     Номенклатура, которая была списана в результате производства
     '''
-    
-    prod_report = models.ForeignKey(Production, on_delete=models.CASCADE)
+
+    produced_consumed = models.ForeignKey(ProductionProduced, on_delete=models.CASCADE)
     consumed = models.ForeignKey(Nomenclature, on_delete=models.PROTECT)
     consumed_uom = models.ForeignKey(UOM, on_delete=models.PROTECT)
     quantity = models.DecimalField(max_digits=10, decimal_places=3)
     
     def __str__(self):
-        return f"{self.prod_report} - {self.consumed} - {self.quantity}"
+        return f"{self.produced_consumed.prod_report} - {self.consumed} - {self.quantity}"
     
     class Meta:
         verbose_name = "Списанные материалы"
@@ -144,6 +144,6 @@ class ProductionConsumed(models.Model):
     def av_price(self):
         res = Purchase.objects.filter(
             material=self.consumed,
-            purch_date__gt=(self.prod_report.prod_date - timedelta(days=30))
+            purch_date__gt=(self.produced_consumed.prod_report.prod_date - timedelta(days=30))
         ).aggregate(Avg('price_ex_vat')).values() # Получение средней закупочной цены материала за последние 30 дней
         return res

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    {% for el in obj %}
+        <li><a href="{% url 'prodreport' el.id %}">{{ el.description }}</a></li>
+    {% endfor %}
+</div>
+
+{% endblock %}
